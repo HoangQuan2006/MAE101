@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<title>Đề Thi Trắc Nghiệm Giá Trị Riêng – Véc Tơ Riêng</title>
+
+<!-- MathJax -->
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['\\(','\\)'], ['$', '$']]
+  }
+};
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<style>
+    *{
+        box-sizing:border-box;
+    }
+
+    body{
+        font-family: Arial, sans-serif;
+        background:#f2f5f9;
+        margin:0;
+        padding:0;
+        color:#222;
+        line-height:1.6;
+    }
+
+    header{
+        background:linear-gradient(135deg,#005fa3,#0084d6);
+        color:white;
+        padding:30px;
+        text-align:center;
+    }
+
+    header h1{
+        margin:0;
+        font-size:36px;
+    }
+
+    header p{
+        margin-top:10px;
+        font-size:18px;
+    }
+
+    .container{
+        width:95%;
+        max-width:1200px;
+        margin:30px auto;
+    }
+
+    .section-title{
+        background:#003f6b;
+        color:white;
+        padding:12px 18px;
+        border-radius:10px;
+        margin-top:40px;
+        font-size:24px;
+        font-weight:bold;
+    }
+
+    .question-box{
+        background:white;
+        border-radius:14px;
+        padding:22px;
+        margin-top:20px;
+        box-shadow:0 4px 10px rgba(0,0,0,0.08);
+        border-left:8px solid #005fa3;
+    }
+
+    .question-title{
+        font-size:20px;
+        font-weight:bold;
+        margin-bottom:18px;
+    }
+
+    .option{
+        padding:12px 15px;
+        border:2px solid #d0d7de;
+        border-radius:10px;
+        margin:10px 0;
+        cursor:pointer;
+        transition:0.25s;
+        background:#fafafa;
+    }
+
+    .option:hover{
+        background:#eef6ff;
+    }
+
+    .correct{
+        background:#c8ffd1 !important;
+        border-color:#16a34a !important;
+        color:#065f46;
+        font-weight:bold;
+    }
+
+    .wrong{
+        background:#ffd0d0 !important;
+        border-color:#dc2626 !important;
+        color:#7f1d1d;
+        font-weight:bold;
+    }
+
+    .disabled{
+        pointer-events:none;
+    }
+
+    .explanation{
+        margin-top:18px;
+        padding:16px;
+        border-radius:10px;
+        background:#fff8dc;
+        border-left:6px solid #f59e0b;
+        display:none;
+    }
+
+    .tip{
+        margin-top:12px;
+        padding:12px;
+        border-radius:10px;
+        background:#e8f4ff;
+        border-left:6px solid #0284c7;
+    }
+
+    .result{
+        position:fixed;
+        top:15px;
+        right:15px;
+        background:#003f6b;
+        color:white;
+        padding:14px 22px;
+        border-radius:12px;
+        font-size:18px;
+        z-index:999;
+        box-shadow:0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    footer{
+        text-align:center;
+        padding:40px;
+        color:#555;
+        font-style:italic;
+    }
+
+    .formula{
+        background:#f9fafb;
+        padding:10px;
+        border-radius:8px;
+        margin:10px 0;
+    }
+
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>ĐỀ THI TƯƠNG TÁC</h1>
+    <p>GIÁ TRỊ RIÊNG – VÉC TƠ RIÊNG</p>
+    <p>20 câu trắc nghiệm • Có lời giải • Có mẹo làm nhanh</p>
+</header>
+
+<div class="result">
+    Điểm: <span id="score">0</span> / 20
+</div>
+
+<div class="container">
+
+<!-- ========================= -->
+<!-- LÝ THUYẾT -->
+<!-- ========================= -->
+
+<div class="section-title">PHẦN I – 5 CÂU LÝ THUYẾT</div>
+
+<div id="questions"></div>
+
+</div>
+
+<footer>
+“Ma trận xoay, kéo, bóp – nhưng có hướng không xoay.”
+</footer>
+
+<script>
+
+const questions = [
+
+/* =====================================================
+   5 CÂU LÝ THUYẾT
+===================================================== */
+
+{
+    type:"Lý thuyết",
+    question:"Theo bài giảng, điều mà phương trình \\(A\\vec{v}=\\lambda \\vec{v}\\) đang che giấu là gì?",
+    options:[
+        "Cách tính định thức",
+        "Hướng không bị xoay",
+        "Cách nhân ma trận",
+        "Cách tính nghịch đảo"
+    ],
+    correct:1,
+    explanation:"Véc tơ riêng là hướng mà sau phép biến đổi, véc tơ vẫn giữ nguyên phương, chỉ thay đổi độ dài.",
+    tip:"Khi thấy \\(A\\vec v = \\lambda \\vec v\\), hãy nghĩ ngay: 'hướng bất biến'."
+},
+
+{
+    type:"Lý thuyết",
+    question:"Giá trị riêng \\(\\lambda\\) cho biết điều gì?",
+    options:[
+        "Hướng của véc tơ",
+        "Kích thước ma trận",
+        "Mức độ kéo hoặc co dãn",
+        "Số hàng của ma trận"
+    ],
+    correct:2,
+    explanation:"Giá trị riêng biểu diễn hệ số kéo dãn hoặc co lại dọc theo véc tơ riêng.",
+    tip:"\\(\\lambda >1\\): kéo dài. \\(0<\\lambda<1\\): co lại. \\(\\lambda<0\\): đảo hướng."
+},
+
+{
+    type:"Lý thuyết",
+    question:"Điều kiện để hệ \\((A-\\lambda I)\\vec v=0\\) có nghiệm khác 0 là:",
+    options:[
+        "\\(A\\) khả nghịch",
+        "\\(\\det(A)=1\\)",
+        "\\(\\det(A-\\lambda I)=0\\)",
+        "\\(\\lambda=0\\)"
+    ],
+    correct:2,
+    explanation:"Để tồn tại nghiệm không tầm thường thì ma trận phải không khả nghịch.",
+    tip:"Cứ thấy 'véc tơ riêng' → nghĩ ngay tới phương trình đặc trưng."
+},
+
+{
+    type:"Lý thuyết",
+    question:"Trong bài giảng, ẩn dụ dây đàn guitar tượng trưng cho điều gì?",
+    options:[
+        "Ma trận chéo",
+        "Tần số riêng và dao động riêng",
+        "Tính định thức",
+        "Không gian vector"
+    ],
+    correct:1,
+    explanation:"Dây đàn dao động theo các mode riêng — tương tự eigenvector và eigenvalue.",
+    tip:"Âm thanh đặc trưng = tần số riêng."
+},
+
+{
+    type:"Lý thuyết",
+    question:"Triết lý sâu xa nhất của giá trị riêng là:",
+    options:[
+        "Mọi ma trận đều đối xứng",
+        "Trong biến đổi có cái bất biến",
+        "Định thức luôn dương",
+        "Vector luôn trực giao"
+    ],
+    correct:1,
+    explanation:"Giá trị riêng giúp tìm các hướng giữ nguyên bản chất trong biến đổi.",
+    tip:"Từ khóa linh hồn: 'cái bất biến trong biến đổi'."
+},
+
+/* =====================================================
+   5 CÂU DỄ
+===================================================== */
+
+{
+    type:"Dễ",
+    question:"Cho \\(A=\\begin{pmatrix}3&0\\\\0&2\\end{pmatrix}\\). Giá trị riêng là:",
+    options:[
+        "1 và 2",
+        "3 và 2",
+        "3 và -2",
+        "0 và 0"
+    ],
+    correct:1,
+    explanation:"Ma trận chéo có giá trị riêng chính là các phần tử trên đường chéo.",
+    tip:"Ma trận chéo → đọc trực tiếp đường chéo."
+},
+
+{
+    type:"Dễ",
+    question:"Cho \\(A=\\begin{pmatrix}5&0\\\\0&-1\\end{pmatrix}\\). Véc tơ riêng ứng với \\(\\lambda=5\\) là:",
+    options:[
+        "\\((1,0)^T\\)",
+        "\\((0,1)^T\\)",
+        "\\((1,1)^T\\)",
+        "\\((1,-1)^T\\)"
+    ],
+    correct:0,
+    explanation:"Hướng trục Ox được kéo theo hệ số 5.",
+    tip:"Ma trận chéo giữ nguyên trục tọa độ."
+},
+
+{
+    type:"Dễ",
+    question:"\\(\\det(A-\\lambda I)=0\\) được gọi là:",
+    options:[
+        "Phương trình tuyến tính",
+        "Phương trình đạo hàm",
+        "Phương trình đặc trưng",
+        "Phương trình lượng giác"
+    ],
+    correct:2,
+    explanation:"Đây là phương trình dùng để tìm giá trị riêng.",
+    tip:"'Characteristic equation' = phương trình đặc trưng."
+},
+
+{
+    type:"Dễ",
+    question:"Cho \\(A=\\begin{pmatrix}2&0\\\\0&2\\end{pmatrix}\\). Giá trị riêng là:",
+    options:[
+        "2",
+        "0",
+        "-2",
+        "1"
+    ],
+    correct:0,
+    explanation:"Ma trận bằng 2I nên mọi véc tơ đều bị kéo gấp đôi.",
+    tip:"\\(A=kI\\) → mọi hướng đều là véc tơ riêng."
+},
+
+{
+    type:"Dễ",
+    question:"Nếu \\(A\\vec v=3\\vec v\\), thì véc tơ bị:",
+    options:[
+        "Xoay 90 độ",
+        "Co còn 1/3",
+        "Kéo dài gấp 3",
+        "Không đổi"
+    ],
+    correct:2,
+    explanation:"Hệ số 3 nghĩa là độ dài tăng gấp 3.",
+    tip:"\\(\\lambda\\) chính là hệ số scale."
+},
+
+/* =====================================================
+   5 CÂU TRUNG BÌNH
+===================================================== */
+
+{
+    type:"Trung bình",
+    question:"Cho \\(A=\\begin{pmatrix}2&1\\\\1&2\\end{pmatrix}\\). Tổng các giá trị riêng là:",
+    options:[
+        "1",
+        "2",
+        "3",
+        "4"
+    ],
+    correct:3,
+    explanation:"Tổng eigenvalue bằng trace = 2+2 = 4.",
+    tip:"Không cần giải phương trình — dùng trace."
+},
+
+{
+    type:"Trung bình",
+    question:"Cho \\(A=\\begin{pmatrix}2&1\\\\1&2\\end{pmatrix}\\). Một giá trị riêng là:",
+    options:[
+        "5",
+        "3",
+        "-1",
+        "0"
+    ],
+    correct:1,
+    explanation:"Phương trình đặc trưng cho nghiệm 1 và 3.",
+    tip:"Ma trận đối xứng dạng này thường có eigenvalue a+b và a-b."
+},
+
+{
+    type:"Trung bình",
+    question:"Cho \\(A=\\begin{pmatrix}2&1\\\\1&2\\end{pmatrix}\\). Véc tơ riêng ứng với \\(\\lambda=3\\) là:",
+    options:[
+        "\\((1,1)^T\\)",
+        "\\((1,-1)^T\\)",
+        "\\((0,1)^T\\)",
+        "\\((1,0)^T\\)"
+    ],
+    correct:0,
+    explanation:"Nhân vào sẽ cho \\((3,3)^T = 3(1,1)^T\\).",
+    tip:"Eigenvector của eigenvalue lớn thường cùng dấu."
+},
+
+{
+    type:"Trung bình",
+    question:"Cho ma trận \\(A=\\begin{pmatrix}4&0\\\\0&7\\end{pmatrix}\\). Định thức bằng:",
+    options:[
+        "11",
+        "28",
+        "7",
+        "4"
+    ],
+    correct:1,
+    explanation:"Định thức ma trận chéo là tích đường chéo.",
+    tip:"Diagonal matrix → determinant = product."
+},
+
+{
+    type:"Trung bình",
+    question:"Nếu eigenvalue bằng \\(-2\\), điều đó nghĩa là:",
+    options:[
+        "Véc tơ bị xoay",
+        "Véc tơ bị kéo dài 2 lần và đảo hướng",
+        "Không thay đổi",
+        "Ma trận suy biến"
+    ],
+    correct:1,
+    explanation:"Dấu âm làm đổi chiều véc tơ.",
+    tip:"Eigenvalue âm → đảo chiều."
+},
+
+/* =====================================================
+   5 CÂU KHÓ
+===================================================== */
+
+{
+    type:"Khó",
+    question:"Cho \\(A=\\begin{pmatrix}1&2\\\\2&1\\end{pmatrix}\\). Giá trị riêng lớn nhất là:",
+    options:[
+        "3",
+        "1",
+        "-1",
+        "2"
+    ],
+    correct:0,
+    explanation:"Eigenvalue là 3 và -1.",
+    tip:"Ma trận dạng \\(\\begin{pmatrix}a&b\\\\b&a\\end{pmatrix}\\) có eigenvalue \\(a+b\\) và \\(a-b\\)."
+},
+
+{
+    type:"Khó",
+    question:"Cho \\(A=\\begin{pmatrix}0&-1\\\\1&0\\end{pmatrix}\\). Ma trận này biểu diễn:",
+    options:[
+        "Kéo dãn",
+        "Phản xạ",
+        "Xoay 90 độ",
+        "Co lại"
+    ],
+    correct:2,
+    explanation:"Đây là ma trận xoay 90 độ.",
+    tip:"Nếu mọi hướng đều bị xoay → không có eigenvector thực."
+},
+
+{
+    type:"Khó",
+    question:"Trace của ma trận luôn bằng:",
+    options:[
+        "Tích eigenvalue",
+        "Tổng eigenvalue",
+        "Định thức",
+        "Hạng ma trận"
+    ],
+    correct:1,
+    explanation:"Tổng giá trị riêng bằng tổng đường chéo chính.",
+    tip:"Trace = tổng eigenvalue."
+},
+
+{
+    type:"Khó",
+    question:"Determinant của ma trận luôn bằng:",
+    options:[
+        "Tổng eigenvalue",
+        "Tích eigenvalue",
+        "Trace",
+        "Hạng"
+    ],
+    correct:1,
+    explanation:"Định thức bằng tích tất cả các eigenvalue.",
+    tip:"det = product eigenvalues."
+},
+
+{
+    type:"Khó",
+    question:"Trong cơ học lượng tử, phương trình \\(H\\psi = E\\psi\\) tương ứng với:",
+    options:[
+        "Đạo hàm riêng",
+        "Phương trình vi phân thường",
+        "Bài toán giá trị riêng",
+        "Tích phân Fourier"
+    ],
+    correct:2,
+    explanation:"Hamiltonian tác động lên trạng thái lượng tử giống bài toán eigenvalue.",
+    tip:"Vật lý lượng tử dùng eigenvalue cực nhiều."
+}
+
+];
+
+const container = document.getElementById("questions");
+let score = 0;
+
+questions.forEach((q,index)=>{
+
+    const box = document.createElement("div");
+    box.className = "question-box";
+
+    box.innerHTML = `
+        <div class="question-title">
+            Câu ${index+1} (${q.type}):
+            ${q.question}
+        </div>
+    `;
+
+    q.options.forEach((opt,i)=>{
+
+        const btn = document.createElement("div");
+        btn.className = "option";
+        btn.innerHTML = opt;
+
+        btn.addEventListener("click",()=>{
+
+            if(box.classList.contains("disabled")) return;
+
+            box.classList.add("disabled");
+
+            const options = box.querySelectorAll(".option");
+
+            options[q.correct].classList.add("correct");
+
+            if(i===q.correct){
+                btn.classList.add("correct");
+                score++;
+                document.getElementById("score").innerText = score;
+            }else{
+                btn.classList.add("wrong");
+            }
+
+            explanation.style.display="block";
+
+            if(window.MathJax){
+                MathJax.typesetPromise();
+            }
+        });
+
+        box.appendChild(btn);
+    });
+
+    const explanation = document.createElement("div");
+    explanation.className = "explanation";
+
+    explanation.innerHTML = `
+        <b>Đáp án đúng:</b> ${String.fromCharCode(65+q.correct)}<br><br>
+        <b>Giải thích:</b> ${q.explanation}
+
+        <div class="tip">
+            <b>Mẹo làm nhanh:</b> ${q.tip}
+        </div>
+    `;
+
+    box.appendChild(explanation);
+
+    container.appendChild(box);
+});
+
+</script>
+
+</body>
+</html>
