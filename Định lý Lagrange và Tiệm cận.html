@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<title>Đề thi trắc nghiệm tương tác - Định lý Lagrange</title>
+
+<!-- MathJax -->
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']]
+  }
+};
+</script>
+
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<style>
+
+body{
+    font-family: Arial, sans-serif;
+    margin:0;
+    padding:0;
+    background:#f2f5f9;
+    color:#222;
+}
+
+header{
+    background:linear-gradient(135deg,#004c99,#0077cc);
+    color:white;
+    padding:30px;
+    text-align:center;
+}
+
+header h1{
+    margin:0;
+    font-size:34px;
+}
+
+header p{
+    margin-top:10px;
+    font-size:18px;
+}
+
+.container{
+    width:95%;
+    max-width:1200px;
+    margin:auto;
+    padding:20px;
+}
+
+.section-title{
+    background:#004c99;
+    color:white;
+    padding:12px;
+    border-radius:10px;
+    margin-top:40px;
+    font-size:24px;
+}
+
+.question{
+    background:white;
+    margin-top:25px;
+    border-radius:15px;
+    padding:25px;
+    box-shadow:0 4px 10px rgba(0,0,0,0.1);
+}
+
+.question h3{
+    margin-top:0;
+    color:#004c99;
+}
+
+.option{
+    border:2px solid #ccc;
+    border-radius:10px;
+    padding:12px;
+    margin-top:10px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.option:hover{
+    background:#f0f8ff;
+}
+
+.correct{
+    background:#c8ffd0 !important;
+    border-color:green !important;
+    color:green;
+    font-weight:bold;
+}
+
+.wrong{
+    background:#ffd3d3 !important;
+    border-color:red !important;
+    color:red;
+    font-weight:bold;
+}
+
+.answer-box{
+    margin-top:20px;
+    background:#f8f9fa;
+    border-left:6px solid #0077cc;
+    padding:15px;
+    border-radius:10px;
+    display:none;
+}
+
+.tip{
+    background:#fff8d6;
+    border-left:5px solid orange;
+    padding:10px;
+    margin-top:12px;
+    border-radius:8px;
+}
+
+footer{
+    margin-top:50px;
+    text-align:center;
+    padding:20px;
+    background:#004c99;
+    color:white;
+}
+
+button{
+    background:#0077cc;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:16px;
+    margin-top:20px;
+}
+
+button:hover{
+    background:#005999;
+}
+
+.level{
+    display:inline-block;
+    padding:5px 12px;
+    border-radius:20px;
+    font-size:14px;
+    color:white;
+    margin-bottom:10px;
+}
+
+.easy{
+    background:green;
+}
+
+.medium{
+    background:orange;
+}
+
+.hard{
+    background:red;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>ĐỀ THI TRẮC NGHIỆM TƯƠNG TÁC</h1>
+    <p>Định lý Lagrange và Tiệm cận – Phương pháp DuyMT</p>
+</header>
+
+<div class="container">
+
+<!-- ================================================= -->
+<!-- LÝ THUYẾT -->
+<!-- ================================================= -->
+
+<div class="section-title">PHẦN I — 5 CÂU LÝ THUYẾT</div>
+
+<div id="questions"></div>
+
+<!-- ================================================= -->
+<!-- BUTTON -->
+<!-- ================================================= -->
+
+<center>
+<button onclick="window.print()">🖨 In đề thi</button>
+<button onclick="downloadHTML()">⬇ Tải file HTML</button>
+</center>
+
+</div>
+
+<footer>
+    <h3>“Từ A đến B, luôn có lúc em đi đúng tốc độ trung bình.”</h3>
+    <p>— Dr.rer.nat Duymt —</p>
+</footer>
+
+<script>
+
+const questions = [
+
+/* ===================================================== */
+/* LÝ THUYẾT */
+/* ===================================================== */
+
+{
+type:"Lý thuyết",
+level:"easy",
+question:"Điều quan trọng nhất mà định lý Lagrange đang che giấu là gì?",
+options:[
+"Đạo hàm luôn bằng 0",
+"Luôn tồn tại điểm mà đạo hàm bằng hệ số góc dây cung",
+"Hàm số phải là bậc hai",
+"Chỉ dùng cho vật lý"
+],
+correct:1,
+explain:"Định lý Lagrange nói rằng luôn tồn tại điểm c sao cho tốc độ tức thời bằng tốc độ trung bình.",
+tip:"Hãy nhớ hình ảnh: tiếp tuyến song song dây cung."
+},
+
+{
+type:"Lý thuyết",
+level:"easy",
+question:"Định lý Rolle là trường hợp đặc biệt của Lagrange khi:",
+options:[
+"$f'(x)=0$",
+"$a=b$",
+"$f(a)=f(b)$",
+"$f(x)=x$"
+],
+correct:2,
+explain:"Khi hai đầu có cùng độ cao thì dây cung nằm ngang.",
+tip:"Rolle = dây cung ngang."
+},
+
+{
+type:"Lý thuyết",
+level:"easy",
+question:"Khi $b \\to a$, định lý Lagrange tiến tới khái niệm nào?",
+options:[
+"Giới hạn",
+"Định nghĩa đạo hàm",
+"Tích phân",
+"Ma trận"
+],
+correct:1,
+explain:"Khi khoảng cách thu nhỏ về 0, hệ số góc dây cung trở thành đạo hàm.",
+tip:"Dây cung → tiếp tuyến."
+},
+
+{
+type:"Lý thuyết",
+level:"easy",
+question:"Ý nghĩa hình học của định lý Lagrange là:",
+options:[
+"Có tiếp tuyến vuông góc dây cung",
+"Có tiếp tuyến song song dây cung",
+"Có hai đạo hàm",
+"Không tồn tại tiếp tuyến"
+],
+correct:1,
+explain:"Đạo hàm tại c bằng hệ số góc dây cung.",
+tip:"Song song ⇒ cùng hệ số góc."
+},
+
+{
+type:"Lý thuyết",
+level:"easy",
+question:"Định lý Cauchy là:",
+options:[
+"Trường hợp riêng của Rolle",
+"Tổng quát hóa Lagrange cho hai hàm",
+"Định nghĩa đạo hàm",
+"Định lý tích phân"
+],
+correct:1,
+explain:"Cauchy mở rộng Lagrange cho tỉ số hai hàm.",
+tip:"Cauchy = 2 hàm."
+},
+
+/* ===================================================== */
+/* DỄ */
+/* ===================================================== */
+
+{
+type:"Bài tập dễ",
+level:"easy",
+question:"Cho $f(x)=x^2$ trên $[1,3]$. Giá trị của $c$ theo định lý Lagrange là:",
+options:[
+"$c=1$",
+"$c=2$",
+"$c=3$",
+"$c=4$"
+],
+correct:1,
+explain:"$$\\frac{f(3)-f(1)}{3-1}=\\frac{9-1}{2}=4$$\nĐạo hàm: $f'(x)=2x$. Giải $2c=4 \\Rightarrow c=2$.",
+tip:"Tính tốc độ trung bình trước rồi cho bằng đạo hàm."
+},
+
+{
+type:"Bài tập dễ",
+level:"easy",
+question:"Cho $f(x)=3x+1$. Khi áp dụng Lagrange trên mọi đoạn, ta được:",
+options:[
+"Có vô số c",
+"Không tồn tại c",
+"$c$ là trung điểm",
+"Mọi điểm đều thỏa"
+],
+correct:3,
+explain:"Vì đạo hàm luôn bằng 3 nên mọi điểm đều thỏa mãn.",
+tip:"Hàm bậc nhất ⇒ độ dốc không đổi."
+},
+
+{
+type:"Bài tập dễ",
+level:"easy",
+question:"Cho $f(x)=x^3$ trên $[0,1]$. Giá trị $f'(c)$ bằng:",
+options:[
+"$1$",
+"$2$",
+"$3$",
+"$4$"
+],
+correct:0,
+explain:"$$\\frac{f(1)-f(0)}{1-0}=1$$ nên $f'(c)=1$.",
+tip:"Không cần tìm c nếu chỉ hỏi đạo hàm."
+},
+
+{
+type:"Bài tập dễ",
+level:"easy",
+question:"Nếu $f'(x)=0$ trên $(a,b)$ thì:",
+options:[
+"$f$ tăng",
+"$f$ giảm",
+"$f$ hằng",
+"$f$ tuần hoàn"
+],
+correct:2,
+explain:"Theo hệ quả của định lý Lagrange.",
+tip:"Đạo hàm bằng 0 ⇒ không đổi."
+},
+
+{
+type:"Bài tập dễ",
+level:"easy",
+question:"Hệ số góc dây cung là:",
+options:[
+"$f'(a)$",
+"$\\dfrac{f(b)-f(a)}{b-a}$",
+"$f(a)+f(b)$",
+"$ab$"
+],
+correct:1,
+explain:"Đó là tốc độ thay đổi trung bình.",
+tip:"Hiệu y chia hiệu x."
+},
+
+/* ===================================================== */
+/* TRUNG BÌNH */
+/* ===================================================== */
+
+{
+type:"Bài tập trung bình",
+level:"medium",
+question:"Cho $f(x)=x^2+1$ trên $[0,2]$. Tìm $c$.",
+options:[
+"$0$",
+"$1$",
+"$2$",
+"$3$"
+],
+correct:1,
+explain:"$$\\frac{5-1}{2}=2$$\n$f'(x)=2x$ nên $2c=2 \\Rightarrow c=1$.",
+tip:"Bậc hai thường cho c là trung điểm."
+},
+
+{
+type:"Bài tập trung bình",
+level:"medium",
+question:"Cho $f(x)=\\sin x$ trên $[0,\\pi]$. Giá trị $f'(c)$ bằng:",
+options:[
+"$0$",
+"$1$",
+"$-1$",
+"$\\pi$"
+],
+correct:0,
+explain:"$$\\frac{\\sin\\pi-\\sin0}{\\pi}=0$$",
+tip:"Sin tại 0 và π đều bằng 0."
+},
+
+{
+type:"Bài tập trung bình",
+level:"medium",
+question:"Hàm nào sau đây không thỏa điều kiện Lagrange trên $[-1,1]$?",
+options:[
+"$x^2$",
+"$|x|$",
+"$x^3$",
+"$x+1$"
+],
+correct:1,
+explain:"$|x|$ không khả vi tại 0.",
+tip:"Hãy kiểm tra điểm gãy."
+},
+
+{
+type:"Bài tập trung bình",
+level:"medium",
+question:"Theo Lagrange, tồn tại c sao cho:",
+options:[
+"$f(c)=0$",
+"$f'(c)=f(c)$",
+"$f'(c)=\\dfrac{f(b)-f(a)}{b-a}$",
+"$f''(c)=0$"
+],
+correct:2,
+explain:"Đây là phát biểu chính xác của định lý.",
+tip:"Đọc kỹ phát biểu chuẩn."
+},
+
+{
+type:"Bài tập trung bình",
+level:"medium",
+question:"Cho $f(x)=e^x$ trên $[0,1]$. Khi đó:",
+options:[
+"$f'(c)=e$",
+"$f'(c)=e-1$",
+"$f'(c)=1$",
+"$f'(c)=0$"
+],
+correct:1,
+explain:"$$\\frac{e^1-e^0}{1}=e-1$$",
+tip:"Đừng quên $e^0=1$."
+},
+
+/* ===================================================== */
+/* KHÓ */
+/* ===================================================== */
+
+{
+type:"Bài tập khó",
+level:"hard",
+question:"Cho $f(x)=\\ln(1+x)$ trên $[0,2]$. Theo Lagrange:",
+options:[
+"$f'(c)=\\ln3$",
+"$f'(c)=\\dfrac{\\ln3}{2}$",
+"$f'(c)=3$",
+"$f'(c)=\\dfrac12$"
+],
+correct:1,
+explain:"$$\\frac{\\ln3-0}{2}=\\frac{\\ln3}{2}$$",
+tip:"Logarithm thường cần chia cho độ dài khoảng."
+},
+
+{
+type:"Bài tập khó",
+level:"hard",
+question:"Cho $f(x)=x^3-3x$ trên $[-1,2]$. Giá trị tốc độ trung bình là:",
+options:[
+"$0$",
+"$1$",
+"$2$",
+"$3$"
+],
+correct:0,
+explain:"$$\\frac{f(2)-f(-1)}{3}=\\frac{2-2}{3}=0$$",
+tip:"Tính giá trị hàm cẩn thận."
+},
+
+{
+type:"Bài tập khó",
+level:"hard",
+question:"Nếu $f'(x)>0$ trên $(a,b)$ thì:",
+options:[
+"$f$ giảm",
+"$f$ hằng",
+"$f$ tăng",
+"$f$ tuần hoàn"
+],
+correct:2,
+explain:"Theo hệ quả của định lý Lagrange.",
+tip:"Đạo hàm dương ⇒ hàm tăng."
+},
+
+{
+type:"Bài tập khó",
+level:"hard",
+question:"Cho $f(x)=x^2-4x$ trên $[0,4]$. Khi đó tồn tại c sao cho:",
+options:[
+"$f'(c)=0$",
+"$f'(c)=1$",
+"$f'(c)=2$",
+"$f'(c)=4$"
+],
+correct:0,
+explain:"$$\\frac{f(4)-f(0)}{4}=0$$ nên $f'(c)=0$.",
+tip:"Nếu hai đầu bằng nhau ⇒ Rolle."
+},
+
+{
+type:"Bài tập khó",
+level:"hard",
+question:"Định lý Lagrange là cầu nối giữa:",
+options:[
+"Tích phân và ma trận",
+"Trung bình và tức thời",
+"Hình học và đại số",
+"Vector và ma trận"
+],
+correct:1,
+explain:"Đây là triết lý cốt lõi của bài học.",
+tip:"Trung bình ↔ tức thời."
+}
+
+];
+
+const container = document.getElementById("questions");
+
+questions.forEach((q,index)=>{
+
+    let levelClass = q.level;
+
+    let html = `
+    <div class="question">
+        <div class="level ${levelClass}">
+            ${q.type.toUpperCase()}
+        </div>
+
+        <h3>Câu ${index+1}. ${q.question}</h3>
+    `;
+
+    q.options.forEach((opt,i)=>{
+        html += `
+        <div class="option" onclick="checkAnswer(this,${i},${q.correct},'answer${index}')">
+            ${String.fromCharCode(65+i)}. ${opt}
+        </div>
+        `;
+    });
+
+    html += `
+        <div class="answer-box" id="answer${index}">
+            <b>✅ Đáp án đúng:</b> ${String.fromCharCode(65+q.correct)} <br><br>
+
+            <b>📘 Giải thích:</b><br>
+            ${q.explain}
+
+            <div class="tip">
+                <b>⚡ Mẹo làm nhanh:</b><br>
+                ${q.tip}
+            </div>
+        </div>
+
+    </div>
+    `;
+
+    container.innerHTML += html;
+
+});
+
+function checkAnswer(element,selected,correct,id){
+
+    let parent = element.parentElement;
+    let options = parent.querySelectorAll(".option");
+
+    options.forEach(opt=>{
+        opt.style.pointerEvents="none";
+    });
+
+    if(selected===correct){
+        element.classList.add("correct");
+    }else{
+        element.classList.add("wrong");
+        options[correct].classList.add("correct");
+    }
+
+    document.getElementById(id).style.display="block";
+
+    if(window.MathJax){
+        MathJax.typesetPromise();
+    }
+}
+
+function downloadHTML(){
+
+    const htmlContent = document.documentElement.outerHTML;
+
+    const blob = new Blob([htmlContent], {type:"text/html"});
+
+    const a = document.createElement("a");
+
+    a.href = URL.createObjectURL(blob);
+
+    a.download = "de-thi-lagrange-tuong-tac.html";
+
+    a.click();
+}
+
+</script>
+
+</body>
+</html>
