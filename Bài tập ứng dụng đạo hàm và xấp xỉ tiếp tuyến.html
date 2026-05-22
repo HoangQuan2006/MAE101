@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Đề Thi Tương Tác - Xấp Xỉ Tiếp Tuyến</title>
+
+<!-- MathJax -->
+<script>
+window.MathJax = {
+    tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+    }
+};
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<style>
+
+body{
+    font-family: Arial, sans-serif;
+    background:#f3f6fb;
+    margin:0;
+    padding:0;
+    color:#222;
+}
+
+header{
+    background:linear-gradient(135deg,#005fa3,#007ad6);
+    color:white;
+    text-align:center;
+    padding:30px;
+}
+
+header h1{
+    margin:0;
+    font-size:38px;
+}
+
+header p{
+    margin-top:10px;
+    font-size:18px;
+}
+
+.container{
+    width:95%;
+    max-width:1200px;
+    margin:auto;
+    padding:20px;
+}
+
+.section-title{
+    background:#003f6b;
+    color:white;
+    padding:15px;
+    margin-top:35px;
+    border-radius:10px;
+    font-size:24px;
+    font-weight:bold;
+}
+
+.question-box{
+    background:white;
+    margin-top:20px;
+    border-radius:14px;
+    padding:22px;
+    box-shadow:0 4px 12px rgba(0,0,0,0.08);
+    border-left:8px solid #005fa3;
+}
+
+.question-title{
+    font-size:20px;
+    font-weight:bold;
+    margin-bottom:18px;
+}
+
+.option{
+    padding:12px;
+    margin:10px 0;
+    border-radius:10px;
+    border:2px solid #d0d7de;
+    cursor:pointer;
+    transition:0.25s;
+    background:#fafafa;
+}
+
+.option:hover{
+    background:#eef6ff;
+}
+
+.correct{
+    background:#c8ffd1 !important;
+    border-color:#16a34a !important;
+    color:#065f46;
+    font-weight:bold;
+}
+
+.wrong{
+    background:#ffd0d0 !important;
+    border-color:#dc2626 !important;
+    color:#7f1d1d;
+    font-weight:bold;
+}
+
+.disabled{
+    pointer-events:none;
+}
+
+.explanation{
+    display:none;
+    margin-top:18px;
+    background:#fff8dc;
+    border-left:6px solid #f59e0b;
+    padding:16px;
+    border-radius:10px;
+}
+
+.tip{
+    margin-top:12px;
+    background:#e8f4ff;
+    border-left:6px solid #0284c7;
+    padding:12px;
+    border-radius:10px;
+}
+
+.score-board{
+    position:fixed;
+    top:15px;
+    right:15px;
+    background:#003f6b;
+    color:white;
+    padding:15px 22px;
+    border-radius:12px;
+    font-size:20px;
+    z-index:999;
+}
+
+footer{
+    text-align:center;
+    padding:40px;
+    color:#555;
+    font-style:italic;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>ỨNG DỤNG ĐẠO HÀM VÀ XẤP XỈ TIẾP TUYẾN</h1>
+    <p>20 câu trắc nghiệm tương tác • Có giải thích • Có mẹo làm nhanh</p>
+</header>
+
+<div class="score-board">
+    Điểm: <span id="score">0</span> / 20
+</div>
+
+<div class="container">
+    <div id="quiz"></div>
+</div>
+
+<footer>
+“Cong – nhìn gần thành thẳng, phức tạp – nhìn gần thành đơn giản.”
+</footer>
+
+<script>
+
+const questions = [
+
+/* =========================================
+5 CÂU LÝ THUYẾT
+========================================= */
+
+{
+type:"Lý thuyết",
+question:"Điều quan trọng nhất mà công thức $f(x) \\approx f(a)+f'(a)(x-a)$ che giấu là gì?",
+options:[
+"Cách tính đạo hàm",
+"Mọi đường cong nhìn gần đều giống đường thẳng",
+"Đạo hàm luôn dương",
+"Hàm số luôn tuyến tính"
+],
+correct:1,
+explanation:"Xấp xỉ tiếp tuyến nói rằng khi nhìn đủ gần một điểm, đồ thị cong sẽ giống đường thẳng.",
+tip:"Hãy nhớ triết lý: 'Đủ gần, mọi thứ trở nên tuyến tính.'"
+},
+
+{
+type:"Lý thuyết",
+question:"Trong công thức xấp xỉ tiếp tuyến, $f'(a)$ biểu diễn điều gì?",
+options:[
+"Giá trị hàm số",
+"Độ cong",
+"Độ dốc tiếp tuyến",
+"Sai số"
+],
+correct:2,
+explanation:"$f'(a)$ là hệ số góc của tiếp tuyến tại điểm $a$.",
+tip:"Đạo hàm = độ dốc."
+},
+
+{
+type:"Lý thuyết",
+question:"Sai số của xấp xỉ tiếp tuyến thường tỉ lệ với:",
+options:[
+"$(x-a)$",
+"$(x-a)^2$",
+"$x^2$",
+"$f(x)$"
+],
+correct:1,
+explanation:"Sai số bậc hai nên càng gần $a$ thì càng nhỏ rất nhanh.",
+tip:"Linear approximation → error quadratic."
+},
+
+{
+type:"Lý thuyết",
+question:"Ẩn dụ 'kính lúp' trong bài giảng dùng để diễn tả điều gì?",
+options:[
+"Tăng kích thước hình",
+"Đường cong khi nhìn gần sẽ giống đường thẳng",
+"Đạo hàm rất lớn",
+"Đồ thị luôn phẳng"
+],
+correct:1,
+explanation:"Khi phóng to cục bộ, đường cong trông gần như tuyến tính.",
+tip:"Zoom in → curve becomes line."
+},
+
+{
+type:"Lý thuyết",
+question:"Gradient Descent sử dụng ý tưởng nào?",
+options:[
+"Tích phân",
+"Định thức",
+"Xấp xỉ tuyến tính",
+"Ma trận nghịch đảo"
+],
+correct:2,
+explanation:"Gradient Descent dùng đạo hàm để xấp xỉ hướng giảm nhanh nhất.",
+tip:"Machine Learning rất thích tuyến tính hóa."
+},
+
+/* =========================================
+5 CÂU DỄ
+========================================= */
+
+{
+type:"Dễ",
+question:"Dùng xấp xỉ tiếp tuyến để tính gần đúng $\\sqrt{4.1}$ tại $a=4$ được:",
+options:[
+"2.1",
+"2.025",
+"2.5",
+"1.95"
+],
+correct:1,
+explanation:"$f(x)=\\sqrt{x}$, $f'(4)=\\frac14$. Suy ra $2+0.25(0.1)=2.025$.",
+tip:"Căn gần số đẹp → chọn điểm gần nhất."
+},
+
+{
+type:"Dễ",
+question:"Cho $f(x)=x^2$. Tiếp tuyến tại $x=1$ có hệ số góc:",
+options:[
+"1",
+"2",
+"3",
+"4"
+],
+correct:1,
+explanation:"$f'(x)=2x$, nên $f'(1)=2$.",
+tip:"Đạo hàm của $x^2$ là $2x$."
+},
+
+{
+type:"Dễ",
+question:"Cho $f(x)=e^x$. Khi $x$ gần 0, $e^x \\approx$",
+options:[
+"$1+x$",
+"$x^2$",
+"$1-x$",
+"$2x$"
+],
+correct:0,
+explanation:"Khai triển Taylor bậc nhất của $e^x$ tại 0 là $1+x$.",
+tip:"Học thuộc các Taylor cơ bản."
+},
+
+{
+type:"Dễ",
+question:"Tiếp tuyến của đồ thị luôn:",
+options:[
+"Song song Ox",
+"Vuông góc Oy",
+"Chạm đồ thị tại điểm xét",
+"Đi qua gốc tọa độ"
+],
+correct:2,
+explanation:"Tiếp tuyến là đường thẳng chạm đồ thị tại điểm xét.",
+tip:"Tiếp tuyến = tangent = touch."
+},
+
+{
+type:"Dễ",
+question:"Cho $f(x)=3x+2$. Xấp xỉ tiếp tuyến của hàm tại mọi điểm là:",
+options:[
+"Khác hàm số",
+"Bằng chính hàm số",
+"Bằng 0",
+"Không tồn tại"
+],
+correct:1,
+explanation:"Hàm bậc nhất đã là đường thẳng nên tiếp tuyến trùng với chính nó.",
+tip:"Linear function → exact approximation."
+},
+
+/* =========================================
+5 CÂU TRUNG BÌNH
+========================================= */
+
+{
+type:"Trung bình",
+question:"Dùng xấp xỉ tuyến tính để tính gần đúng $\\ln(1.02)$:",
+options:[
+"0.02",
+"0.2",
+"1.02",
+"0.002"
+],
+correct:0,
+explanation:"$\\ln(1+x)\\approx x$ khi $x$ nhỏ.",
+tip:"Log gần 1 → dùng $\\ln(1+x)\\approx x$."
+},
+
+{
+type:"Trung bình",
+question:"Cho $f(x)=\\sin x$. Xấp xỉ tuyến tính gần $0$ là:",
+options:[
+"$1+x$",
+"$x$",
+"$x^2$",
+"$1-x$"
+],
+correct:1,
+explanation:"$\\sin x \\approx x$ khi $x$ nhỏ.",
+tip:"Một công thức vàng trong vật lý."
+},
+
+{
+type:"Trung bình",
+question:"Nếu khoảng cách tới điểm tiếp xúc giảm một nửa thì sai số xấp xỉ thường:",
+options:[
+"Tăng gấp đôi",
+"Giảm khoảng 4 lần",
+"Không đổi",
+"Tăng 4 lần"
+],
+correct:1,
+explanation:"Sai số bậc hai nên giảm theo bình phương khoảng cách.",
+tip:"Half distance → quarter error."
+},
+
+{
+type:"Trung bình",
+question:"Cho $f(x)=x^3$. Xấp xỉ tiếp tuyến tại $a=1$ là:",
+options:[
+"$1+3(x-1)$",
+"$x^3$",
+"$3x^2$",
+"$1+x$"
+],
+correct:0,
+explanation:"$f(1)=1$, $f'(1)=3$ nên $L(x)=1+3(x-1)$.",
+tip:"Công thức chuẩn: $L(x)=f(a)+f'(a)(x-a)$."
+},
+
+{
+type:"Trung bình",
+question:"Cho $f(x)=\\sqrt{x}$ tại $a=9$. Xấp xỉ $\\sqrt{9.1}$ là:",
+options:[
+"3.0167",
+"3.5",
+"2.9",
+"3.1"
+],
+correct:0,
+explanation:"$f'(9)=\\frac16$. Suy ra $3+\\frac16(0.1)=3.0167$.",
+tip:"Căn gần số chính phương rất dễ xấp xỉ."
+},
+
+/* =========================================
+5 CÂU KHÓ
+========================================= */
+
+{
+type:"Khó",
+question:"Cho $f(x)=\\frac{1}{x}$. Xấp xỉ tuyến tính tại $a=1$ là:",
+options:[
+"$1-x$",
+"$1+x$",
+"$x-1$",
+"$x$"
+],
+correct:0,
+explanation:"$f'(x)=-1/x^2$, nên tại $1$: $L(x)=1-(x-1)=2-x$ ≈ $1-x$ quanh 1.",
+tip:"Nghịch đảo gần 1 thường dùng $1-x$."
+},
+
+{
+type:"Khó",
+question:"Khai triển Taylor bậc nhất thực chất là:",
+options:[
+"Xấp xỉ bằng parabol",
+"Xấp xỉ bằng đường thẳng",
+"Tính tích phân",
+"Giải phương trình"
+],
+correct:1,
+explanation:"Taylor bậc nhất chính là xấp xỉ tiếp tuyến.",
+tip:"Bậc 1 = tuyến tính."
+},
+
+{
+type:"Khó",
+question:"Nếu hàm không khả vi tại điểm $a$ thì:",
+options:[
+"Luôn có tiếp tuyến",
+"Không dùng được xấp xỉ tiếp tuyến chuẩn",
+"Đạo hàm bằng 0",
+"Hàm luôn liên tục"
+],
+correct:1,
+explanation:"Không khả vi thì không tồn tại đạo hàm nên không có linear approximation chuẩn.",
+tip:"No derivative → no tangent approximation."
+},
+
+{
+type:"Khó",
+question:"Cho $f(x)=\\cos x$. Gần $0$, giá trị gần đúng của $\\cos(0.01)$ là:",
+options:[
+"1",
+"0.01",
+"-1",
+"0"
+],
+correct:0,
+explanation:"Taylor bậc nhất của cos tại 0 là 1.",
+tip:"Cos gần 0 gần như bằng 1."
+},
+
+{
+type:"Khó",
+question:"Trong vật lý và kỹ thuật, tuyến tính hóa hệ phi tuyến nhằm mục đích:",
+options:[
+"Làm bài toán đơn giản hơn",
+"Tăng độ phức tạp",
+"Loại bỏ đạo hàm",
+"Tạo sai số lớn"
+],
+correct:0,
+explanation:"Hệ phi tuyến thường rất khó giải chính xác nên người ta xấp xỉ tuyến tính.",
+tip:"Kỹ thuật luôn ưu tiên mô hình đơn giản."
+}
+
+];
+
+const quiz = document.getElementById("quiz");
+let score = 0;
+
+function renderQuestions(){
+
+    let currentSection = "";
+
+    questions.forEach((q,index)=>{
+
+        if(q.type !== currentSection){
+            currentSection = q.type;
+
+            const section = document.createElement("div");
+            section.className = "section-title";
+            section.innerText = "PHẦN: " + currentSection.toUpperCase();
+            quiz.appendChild(section);
+        }
+
+        const box = document.createElement("div");
+        box.className = "question-box";
+
+        box.innerHTML = `
+            <div class="question-title">
+                Câu ${index+1}: ${q.question}
+            </div>
+        `;
+
+        q.options.forEach((opt,i)=>{
+
+            const btn = document.createElement("div");
+            btn.className = "option";
+            btn.innerHTML = opt;
+
+            btn.onclick = () => {
+
+                if(box.classList.contains("disabled")) return;
+
+                box.classList.add("disabled");
+
+                const allOptions = box.querySelectorAll(".option");
+
+                allOptions[q.correct].classList.add("correct");
+
+                if(i===q.correct){
+                    btn.classList.add("correct");
+                    score++;
+                    document.getElementById("score").innerText = score;
+                }else{
+                    btn.classList.add("wrong");
+                }
+
+                explain.style.display="block";
+
+                if(window.MathJax){
+                    MathJax.typesetPromise();
+                }
+            };
+
+            box.appendChild(btn);
+        });
+
+        const explain = document.createElement("div");
+        explain.className = "explanation";
+
+        explain.innerHTML = `
+            <b>Đáp án đúng:</b> ${String.fromCharCode(65+q.correct)}
+            <br><br>
+            <b>Giải thích:</b> ${q.explanation}
+
+            <div class="tip">
+                <b>Mẹo làm nhanh:</b> ${q.tip}
+            </div>
+        `;
+
+        box.appendChild(explain);
+
+        quiz.appendChild(box);
+
+    });
+
+}
+
+renderQuestions();
+
+</script>
+
+</body>
+</html>
