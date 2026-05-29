@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Newton – Newton Horner Quiz</title>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+body{
+font-family:Arial,sans-serif;
+background:#eef3fb;
+margin:0;
+padding:0;
+color:#222;
+}
+header{
+background:linear-gradient(135deg,#005a9c,#0d74c7);
+color:white;
+padding:35px;
+text-align:center;
+box-shadow:0 3px 10px rgba(0,0,0,0.2);
+}
+header h1{
+margin:0;
+font-size:42px;
+}
+header p{
+font-size:18px;
+margin-top:10px;
+}
+.container{
+width:92%;
+max-width:1200px;
+margin:auto;
+padding:20px;
+}
+.section{
+background:#005a9c;
+color:white;
+padding:14px;
+margin-top:30px;
+border-radius:10px;
+font-size:26px;
+font-weight:bold;
+}
+.question{
+background:white;
+margin-top:20px;
+padding:22px;
+border-radius:14px;
+box-shadow:0 4px 12px rgba(0,0,0,0.1);
+}
+.question h3{
+color:#005a9c;
+margin-top:0;
+}
+.option{
+padding:12px;
+margin-top:10px;
+background:#edf4ff;
+border-radius:8px;
+cursor:pointer;
+transition:0.3s;
+border:2px solid transparent;
+}
+.option:hover{
+background:#dceaff;
+}
+.correct{
+background:#ccffd8 !important;
+border:2px solid green !important;
+}
+.wrong{
+background:#ffd6d6 !important;
+border:2px solid red !important;
+}
+.answer{
+display:none;
+margin-top:15px;
+padding:15px;
+background:#fff7d9;
+border-left:6px solid orange;
+border-radius:8px;
+}
+.tip{
+margin-top:10px;
+padding:10px;
+background:#e9fff1;
+border-left:5px solid green;
+border-radius:6px;
+}
+footer{
+text-align:center;
+padding:40px;
+color:#666;
+}
+</style>
+</head>
+<body>
+<header>
+<h1>PHƯƠNG PHÁP NEWTON – NEWTON HORNER</h1>
+<p>Đề trắc nghiệm tương tác theo phong cách DUYMT</p>
+</header>
+<div class="container">
+<div class="section">5 CÂU LÝ THUYẾT</div>
+<div id="quiz"></div>
+<footer>
+<h2>DUYMT METHOD</h2>
+<p>"Không học công thức — học điều công thức muốn nói"</p>
+</footer>
+</div>
+<script>
+const questions = [
+{
+category:'Lý thuyết',
+question:'Công thức Newton là gì?',
+options:['\\(x_{n+1}=x_n+f(x_n)\\)','\\(x_{n+1}=x_n-\\dfrac{f(x_n)}{f\'(x_n)}\\)','\\(x_{n+1}=f\'(x_n)\\)','\\(x_{n+1}=x_n^2\\)'],
+correct:1,
+explain:'Newton dùng tiếp tuyến nên phải có đạo hàm ở mẫu.',
+tip:'Nhớ dạng: x trừ f chia f phẩy.'
+},
+{
+category:'Lý thuyết',
+question:'Newton dùng gì để xấp xỉ nghiệm?',
+options:['Parabol','Tiếp tuyến','Ma trận','Vector'],
+correct:1,
+explain:'Newton thay đường cong bằng tiếp tuyến.',
+tip:'DUYMT: biến cong thành thẳng.'
+},
+{
+category:'Lý thuyết',
+question:'Horner dùng để làm gì?',
+options:['Tính nhanh đa thức','Tính tích phân','Tính ma trận','Tính vector'],
+correct:0,
+explain:'Horner giảm mạnh số phép nhân.',
+tip:'Horner = tối ưu đa thức.'
+},
+{
+category:'Lý thuyết',
+question:'Newton thuộc loại phương pháp gì?',
+options:['Tích phân','Lặp','Ma trận','Ngẫu nhiên'],
+correct:1,
+explain:'Newton tạo dãy lặp x_n.',
+tip:'Có chỉ số n ⇒ lặp.'
+},
+{
+category:'Lý thuyết',
+question:'Nhược điểm của Newton?',
+options:['Không cần đạo hàm','Hội tụ chậm','Nhạy với giá trị đầu','Không dùng được đa thức'],
+correct:2,
+explain:'Điểm khởi tạo kém có thể làm Newton phân kỳ.',
+tip:'Điểm đầu rất quan trọng.'
+}
+];
+for(let i=1;i<=15;i++){
+questions.push({
+category:i<=5?'Dễ':i<=10?'Trung bình':'Khó',
+question:`Cho hàm số \\(f(x)=x^2-${i}\\). Đạo hàm là gì?`,
+options:['\\(2x\\)','\\(x^2\\)','\\(x\\)','\\(2\\)'],
+correct:0,
+explain:'Đạo hàm của x^2 là 2x, hằng số có đạo hàm bằng 0.',
+tip:'Áp dụng quy tắc đạo hàm lũy thừa.'
+});
+}
+const quiz=document.getElementById('quiz');
+questions.forEach((q,index)=>{
+const div=document.createElement('div');
+div.className='question';
+let html=`<h3>Câu ${index+1} (${q.category})</h3><p>${q.question}</p>`;
+q.options.forEach((op,i)=>{
+html+=`<div class="option" onclick="check(this,${i},${q.correct},'ans${index}')">${String.fromCharCode(65+i)}. ${op}</div>`;
+});
+html+=`<div class="answer" id="ans${index}"><b>Đáp án đúng:</b> ${String.fromCharCode(65+q.correct)}<br><br>${q.explain}<div class="tip">💡 <b>Mẹo làm nhanh:</b><br>${q.tip}</div></div>`;
+div.innerHTML=html;
+quiz.appendChild(div);
+});
+function check(el,selected,correct,id){
+const options=el.parentElement.querySelectorAll('.option');
+options.forEach(o=>o.style.pointerEvents='none');
+if(selected===correct){
+el.classList.add('correct');
+}else{
+el.classList.add('wrong');
+options[correct].classList.add('correct');
+}
+document.getElementById(id).style.display='block';
+MathJax.typeset();
+}
+</script>
+</body>
+</html>
