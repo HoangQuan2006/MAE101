@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Đề thi Tích phân xác định - DUYMT</title>
+
+<!-- MathJax -->
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<style>
+body{
+    font-family: Arial;
+    margin:0;
+    background:#f5f7fa;
+}
+
+header{
+    background:#0a5aa0;
+    color:white;
+    padding:15px;
+    text-align:center;
+}
+
+.container{
+    display:flex;
+    height:100vh;
+}
+
+/* PREVIEW PANEL */
+#preview{
+    flex:2;
+    overflow:auto;
+    padding:20px;
+}
+
+/* RIGHT PANEL */
+#side{
+    flex:1;
+    background:#fff;
+    border-left:2px solid #ddd;
+    padding:15px;
+    overflow:auto;
+}
+
+.question{
+    background:white;
+    padding:15px;
+    margin-bottom:15px;
+    border-radius:10px;
+    box-shadow:0 2px 5px rgba(0,0,0,0.1);
+}
+
+.option{
+    padding:10px;
+    margin:5px 0;
+    border:1px solid #ccc;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+.option:hover{
+    background:#f0f0f0;
+}
+
+.correct{
+    background:#c8f7c5 !important;
+    border-color:green;
+}
+
+.wrong{
+    background:#f7c5c5 !important;
+    border-color:red;
+}
+
+.explain{
+    margin-top:10px;
+    padding:10px;
+    background:#eef;
+    border-radius:8px;
+    display:none;
+}
+
+button{
+    padding:10px;
+    margin-top:10px;
+    cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h2>ĐỀ THI TRẮC NGHIỆM – TÍCH PHÂN XÁC ĐỊNH (DUYMT)</h2>
+<p>Click đáp án → hiện đúng/sai + lời giải + mẹo nhanh</p>
+</header>
+
+<div class="container">
+
+<!-- PREVIEW (LIVE QUIZ) -->
+<div id="preview"></div>
+
+<!-- SIDE PANEL -->
+<div id="side">
+<h3>📦 Điều khiển</h3>
+<button onclick="downloadHTML()">⬇ Tải file HTML</button>
+<p>Trang này chính là <b>preview trực tiếp</b></p>
+</div>
+
+</div>
+
+<script>
+// ========================
+// DATA QUESTIONS (20 câu)
+// ========================
+const questions = [
+{
+type:"Lý thuyết",
+q:"Ký hiệu $\\int$ xuất phát từ ý tưởng nào?",
+a:["Hiệu","Tổng","Đạo hàm","Ma trận"],
+c:1,
+ex:"Dấu ∫ là chữ S kéo dài → SUM (tổng vô hạn).",
+tip:"Nhớ: ∫ = SUM"
+},
+{
+type:"Lý thuyết",
+q:"Tích phân xác định là gì?",
+a:["Đạo hàm ngược","Giới hạn tổng Riemann","Chu vi","Vector"],
+c:1,
+ex:"Tích phân = giới hạn của tổng các hình chữ nhật nhỏ.",
+tip:"Nhìn ngay Riemann sum"
+},
+{
+type:"Lý thuyết",
+q:"Ý nghĩa hình học của tích phân?",
+a:["Chu vi","Diện tích có dấu","Độ dốc","Thể tích rỗng"],
+c:1,
+ex:"Tích phân cho diện tích phía dưới đồ thị.",
+tip:"Nhớ: AREA SIGNED"
+},
+{
+type:"Lý thuyết",
+q:"Định lý cơ bản giải tích nói gì?",
+a:[
+"$F'(x)=f(x)$ và $\int f = F(b)-F(a)$",
+"$f'=F$",
+"Không liên quan",
+"$\int = đạo hàm$"
+],
+c:0,
+ex:"Liên kết đạo hàm và tích phân là hai phép ngược nhau.",
+tip:"INVERSE OPERATIONS"
+},
+{
+type:"Lý thuyết",
+q:"dx trong tích phân là gì?",
+a:["Khoảng nhỏ vô hạn","Số lớn","Hằng số","Ma trận"],
+c:0,
+ex:"dx là lát cắt cực nhỏ tiến về 0.",
+tip:"dx = infinitesimal"
+},
+
+// EASY
+{
+type:"Dễ",
+q:"$\\int_0^1 x dx$ bằng?",
+a:["1","1/2","2","0"],
+c:1,
+ex:"= x²/2 |0→1 = 1/2",
+tip:"Power rule"
+},
+{
+type:"Dễ",
+q:"$\\int_0^2 x dx$?",
+a:["2","1","4","3"],
+c:0,
+ex:"x²/2 |0→2 = 2",
+tip:"b²/2"
+},
+{
+type:"Dễ",
+q:"$\\int x^2 dx$ là?",
+a:["x³/3","x²/2","2x","lnx"],
+c:0,
+ex:"Power rule",
+tip:"+1 chia lại"
+},
+{
+type:"Dễ",
+q:"$\\int 0 dx$?",
+a:["0","1","x","∞"],
+c:0,
+ex:"tích phân của 0 luôn bằng 0",
+tip:"zero rule"
+},
+{
+type:"Dễ",
+q:"$\\int 1 dx$?",
+a:["x","1","0","x²"],
+c:0,
+ex:"= x + C",
+tip:"hằng số → x"
+},
+
+// MEDIUM
+{
+type:"Trung bình",
+q:"$\\int_0^1 (x+1) dx$?",
+a:["1","3/2","2","1/2"],
+c:1,
+ex:"= 1/2 + 1 = 3/2",
+tip:"tách tích phân"
+},
+{
+type:"Trung bình",
+q:"Nếu f chẵn trên [-a,a] thì?",
+a:["=0","=2∫0a f","=∫0a","không xác định"],
+c:1,
+ex:"Tính đối xứng",
+tip:"even function"
+},
+{
+type:"Trung bình",
+q:"$\\int_a^b f(x)dx$ đổi cận?",
+a:["giữ nguyên","đổi dấu","nhân 2","chia 2"],
+c:1,
+ex:"đổi cận đổi dấu",
+tip:"swap → minus"
+},
+{
+type:"Trung bình",
+q:"$\\int x dx$?",
+a:["x²/2","x²","lnx","1/x"],
+c:0,
+ex:"power rule",
+tip:"+1 chia"
+},
+{
+type:"Trung bình",
+q:"Tổng Riemann tiến về?",
+a:["0","∞","tích phân","đạo hàm"],
+c:2,
+ex:"limit of sums",
+tip:"sum → integral"
+},
+
+// HARD
+{
+type:"Khó",
+q:"$\\int_0^2 (x^2+2x)dx$?",
+a:["10/3","14/3","8/3","6"],
+c:1,
+ex:"x³/3 + x² |0→2 = 8/3+4=14/3",
+tip:"split terms"
+},
+{
+type:"Khó",
+q:"$\\int_0^1 x^3 dx$?",
+a:["1/3","1/4","1/2","1"],
+c:1,
+ex:"x⁴/4 = 1/4",
+tip:"n+1 rule"
+},
+{
+type:"Khó",
+q:"$\\int_0^1 (1-x)dx$?",
+a:["1/2","1","0","2"],
+c:0,
+ex:"=1 - 1/2 = 1/2",
+tip:"split linear"
+},
+{
+type:"Khó",
+q:"$\\int_0^1 (x^2-x)dx$?",
+a:["-1/6","1/6","0","-1/3"],
+c:0,
+ex:"1/3 - 1/2 = -1/6",
+tip:"careful sign"
+},
+{
+type:"Khó",
+q:"Ý tưởng cốt lõi tích phân?",
+a:["cộng vô hạn nhỏ","đạo hàm","vector","log"],
+c:0,
+ex:"tổng vi phân",
+tip:"infinite sum"
+}
+];
+
+// ========================
+// RENDER
+// ========================
+const container = document.getElementById("preview");
+
+questions.forEach((q,i)=>{
+    const div = document.createElement("div");
+    div.className="question";
+
+    div.innerHTML = `
+    <h4>Câu ${i+1} (${q.type})</h4>
+    <p>${q.q}</p>
+    <div class="options"></div>
+    <div class="explain">
+        <b>Giải thích:</b> ${q.ex}<br>
+        <b>Mẹo:</b> ${q.tip}
+    </div>
+    `;
+
+    const optDiv = div.querySelector(".options");
+
+    q.a.forEach((opt,idx)=>{
+        const btn = document.createElement("div");
+        btn.className="option";
+        btn.innerHTML = opt;
+
+        btn.onclick = ()=>{
+            if(idx===q.c){
+                btn.classList.add("correct");
+            }else{
+                btn.classList.add("wrong");
+                optDiv.children[q.c].classList.add("correct");
+            }
+            div.querySelector(".explain").style.display="block";
+        };
+
+        optDiv.appendChild(btn);
+    });
+
+    container.appendChild(div);
+});
+
+// ========================
+// DOWNLOAD HTML
+// ========================
+function downloadHTML(){
+    const html = document.documentElement.outerHTML;
+    const blob = new Blob([html], {type:"text/html"});
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "de_thi_tich_phan_duymt.html";
+    a.click();
+}
+</script>
+
+</body>
+</html>
