@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Đề Thi Trắc Nghiệm Đạo Hàm – Phương pháp DuyMT</title>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+  <style>
+    body {
+      font-family: "Times New Roman", serif;
+      background: #f4f7fb;
+      margin: 0;
+      padding: 0;
+      color: #222;
+      line-height: 1.6;
+    }
+
+    header {
+      background: linear-gradient(135deg,#005a9c,#003f6d);
+      color: white;
+      padding: 30px;
+      text-align: center;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2.4rem;
+    }
+
+    header p {
+      margin-top: 10px;
+      font-size: 1.1rem;
+    }
+
+    .container {
+      width: 92%;
+      max-width: 1200px;
+      margin: auto;
+      padding: 25px 0 50px;
+    }
+
+    .section-title {
+      background: #005a9c;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 10px;
+      margin: 35px 0 20px;
+      font-size: 1.4rem;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .question-card {
+      background: white;
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 22px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+      border-left: 8px solid #005a9c;
+    }
+
+    .question-title {
+      font-weight: bold;
+      font-size: 1.1rem;
+      margin-bottom: 15px;
+    }
+
+    .option {
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 10px;
+      background: #eef4fb;
+      cursor: pointer;
+      transition: 0.3s;
+      border: 2px solid transparent;
+    }
+
+    .option:hover {
+      background: #dcecff;
+    }
+
+    .correct {
+      background: #c9ffd3 !important;
+      border-color: #0c9b2f !important;
+      color: #06611c;
+      font-weight: bold;
+    }
+
+    .wrong {
+      background: #ffd4d4 !important;
+      border-color: #d11f1f !important;
+      color: #7a0000;
+      font-weight: bold;
+    }
+
+    .explanation {
+      display: none;
+      margin-top: 18px;
+      padding: 15px;
+      border-radius: 12px;
+      background: #fff8d8;
+      border-left: 6px solid #e0b100;
+    }
+
+    .tip {
+      margin-top: 10px;
+      background: #e9f8ff;
+      padding: 10px;
+      border-left: 5px solid #0091d5;
+      border-radius: 8px;
+    }
+
+    .score-box {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: #003f6d;
+      color: white;
+      padding: 15px;
+      text-align: center;
+      font-size: 1.2rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+
+    .download-btn {
+      display: inline-block;
+      margin-top: 15px;
+      padding: 12px 24px;
+      background: #ffb400;
+      color: #111;
+      text-decoration: none;
+      font-weight: bold;
+      border-radius: 10px;
+      transition: 0.3s;
+    }
+
+    .download-btn:hover {
+      background: #ffc94d;
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px;
+      color: #555;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>ĐỀ THI TRẮC NGHIỆM ĐẠO HÀM</h1>
+  <p>Phương pháp DuyMT – Không học công thức, học điều công thức muốn nói</p>
+  <a class="download-btn" download="de-thi-dao-ham-duymt.html" href="#">⬇ Tải file HTML</a>
+</header>
+
+<div class="score-box">
+  Điểm hiện tại: <span id="score">0</span> / 20
+</div>
+
+<div class="container" id="quiz-container"></div>
+
+<footer>
+  “Đạo hàm là kính hiển vi của sự thay đổi.” – Dr.rer.nat Duymt
+</footer>
+
+<script>
+const questions = [
+
+// =========================
+// LÝ THUYẾT
+// =========================
+{
+section:"5 CÂU LÝ THUYẾT",
+question:"1. Theo bài giảng DuyMT, đạo hàm thực chất là gì?",
+options:[
+"Một công thức biến đổi ký hiệu",
+"Một kỹ thuật tính nhanh",
+"Một cách đo tốc độ biến thiên tức thời",
+"Một dạng phương trình"
+],
+correct:2,
+explanation:"Đạo hàm sinh ra để đo sự thay đổi tức thời của sự vật, không phải để học thuộc công thức.",
+ tip:"Khi thấy đạo hàm, hãy luôn nghĩ tới câu hỏi: ‘Đang thay đổi nhanh đến mức nào?’"
+},
+{
+question:"2. Ý nghĩa hình học của đạo hàm là gì?",
+options:[
+"Diện tích dưới đồ thị",
+"Độ dốc của tiếp tuyến",
+"Khoảng cách giữa hai điểm",
+"Chu vi đường cong"
+],
+correct:1,
+explanation:"Đạo hàm tại một điểm chính là hệ số góc của tiếp tuyến với đồ thị tại điểm đó.",
+ tip:"Hãy tưởng tượng tiếp tuyến là ảnh chụp tức thời của chuyển động."
+},
+{
+question:"3. Trong công thức đạo hàm, mẫu số \(h\) biểu diễn điều gì?",
+options:[
+"Độ cao",
+"Khoảng thay đổi đầu vào",
+"Giá trị hàm số",
+"Đạo hàm cấp hai"
+],
+correct:1,
+explanation:"\(h\) là khoảng thay đổi rất nhỏ của biến số đầu vào.",
+ tip:"Tử số là ‘thay đổi bao nhiêu’, mẫu số là ‘trong bao lâu’."
+},
+{
+question:"4. Đạo hàm của vận tốc là gì?",
+options:[
+"Quãng đường",
+"Năng lượng",
+"Gia tốc",
+"Khối lượng"
+],
+correct:2,
+explanation:"Gia tốc là tốc độ thay đổi của vận tốc theo thời gian.",
+ tip:"Hãy nhớ: quãng đường → vận tốc → gia tốc."
+},
+{
+question:"5. Theo triết lý DuyMT, đạo hàm là gì?",
+options:[
+"Công cụ tính toán khô khan",
+"Kính hiển vi của sự thay đổi",
+"Một phương pháp giải phương trình",
+"Một dạng số đặc biệt"
+],
+correct:1,
+explanation:"Đạo hàm giúp nhìn thấy sự thay đổi ẩn bên trong chuyển động.",
+ tip:"Triết lý DuyMT luôn đọc ra ‘linh hồn’ của công thức."
+},
+
+// =========================
+// DỄ
+// =========================
+{
+section:"5 CÂU BÀI TẬP DỄ",
+question:"6. Tính \(\\frac{d}{dx}(x^3)\)",
+options:["\(x^2\)","\(2x\)","\(3x^2\)","\(x^3\)"],
+correct:2,
+explanation:"Áp dụng quy tắc: \((x^n)' = nx^{n-1}\).",
+ tip:"Hạ số mũ xuống trước, rồi giảm số mũ đi 1."
+},
+{
+question:"7. Đạo hàm của \(5x\) là:",
+options:["0","5","x","10x"],
+correct:1,
+explanation:"\((ax)' = a\).",
+ tip:"Đạo hàm của hàm bậc nhất chính là hệ số đứng trước x."
+},
+{
+question:"8. Tính \((7)'\)",
+options:["1","7","0","Không tồn tại"],
+correct:2,
+explanation:"Đạo hàm của hằng số luôn bằng 0.",
+ tip:"Hằng số không thay đổi ⇒ tốc độ thay đổi bằng 0."
+},
+{
+question:"9. Tính \(\\frac{d}{dx}(2x^2)\)",
+options:["\(2x\)","\(4x\)","\(x^2\)","\(4x^2\)"],
+correct:1,
+explanation:"\((2x^2)' = 2.2x = 4x\).",
+ tip:"Giữ hệ số ngoài rồi áp dụng quy tắc lũy thừa."
+},
+{
+question:"10. Đạo hàm của \(\\sin x\) là:",
+options:["\(\\cos x\)","\(-\\sin x\)","\(\\tan x\)","\(-\\cos x\)"],
+correct:0,
+explanation:"Công thức cơ bản: \((\\sin x)' = \\cos x\).",
+ tip:"Học cặp lượng giác: sin → cos, cos → -sin."
+},
+
+// =========================
+// TRUNG BÌNH
+// =========================
+{
+section:"5 CÂU BÀI TẬP TRUNG BÌNH",
+question:"11. Tính đạo hàm của \(f(x)=x^4+2x\)",
+options:["\(4x^3+2\)","\(x^3+2\)","\(4x+2\)","\(2x^4\)"],
+correct:0,
+explanation:"Lấy đạo hàm từng hạng tử: \((x^4)'=4x^3\), \((2x)'=2\).",
+ tip:"Đạo hàm tổng bằng tổng các đạo hàm."
+},
+{
+question:"12. Cho \(f(x)=3x^2-5x+1\). Tính \(f'(2)\)",
+options:["7","9","12","5"],
+correct:0,
+explanation:"\(f'(x)=6x-5\). Thay \(x=2\): \(12-5=7\).",
+ tip:"Đạo hàm trước, thế số sau."
+},
+{
+question:"13. Đạo hàm của \(e^x\) là:",
+options:["\(x e^{x-1}\)","\(e^x\)","\(1\)","\(\\ln x\)"],
+correct:1,
+explanation:"Hàm mũ cơ số e là hàm đặc biệt: đạo hàm bằng chính nó.",
+ tip:"\(e^x\) là ‘hàm bất tử’: đạo hàm không đổi dạng."
+},
+{
+question:"14. Tính \((\\cos x)'\)",
+options:["\(\\sin x\)","\(-\\sin x\)","\(\\cos x\)","\(-\\cos x\)"],
+correct:1,
+explanation:"Công thức cơ bản: \((\\cos x)'=-\\sin x\).",
+ tip:"Sin dương, cos âm."
+},
+{
+question:"15. Cho \(s(t)=t^2\). Vận tốc tại thời điểm \(t=3\) là:",
+options:["3","6","9","12"],
+correct:1,
+explanation:"\(v(t)=s'(t)=2t\). Tại \(t=3\): \(v=6\).",
+ tip:"Quãng đường đạo hàm ra vận tốc."
+},
+
+// =========================
+// KHÓ
+// =========================
+{
+section:"5 CÂU BÀI TẬP KHÓ",
+question:"16. Tính đạo hàm của \(f(x)=x^5-3x^2+4\)",
+options:["\(5x^4-6x\)","\(5x^4-3x\)","\(x^4-6x\)","\(5x^4+6x\)"],
+correct:0,
+explanation:"\((x^5)'=5x^4\), \((-3x^2)'=-6x\), hằng số đạo hàm bằng 0.",
+ tip:"Luôn tách từng hạng tử riêng để tránh sai dấu."
+},
+{
+question:"17. Tính \(\\frac{d}{dx}(\\ln x)\)",
+options:["\(x\)","\(1/x\)","\(e^x\)","\(\\ln x\)"],
+correct:1,
+explanation:"Công thức cơ bản: \((\\ln x)'=1/x\).",
+ tip:"Logarit tự nhiên luôn đi với nghịch đảo."
+},
+{
+question:"18. Cho \(f(x)=x^3\). Hệ số góc tiếp tuyến tại \(x=2\) là:",
+options:["4","8","12","16"],
+correct:2,
+explanation:"\(f'(x)=3x^2\). Tại \(x=2\): \(3.2^2=12\).",
+ tip:"Hệ số góc tiếp tuyến chính là giá trị đạo hàm tại điểm đó."
+},
+{
+question:"19. Nếu \(v(t)=4t^2\), gia tốc là:",
+options:["\(4t\)","\(8t\)","\(2t\)","\(8t^2\)"],
+correct:1,
+explanation:"Gia tốc là đạo hàm của vận tốc: \(a(t)=v'(t)=8t\).",
+ tip:"Muốn tìm gia tốc → đạo hàm vận tốc thêm một lần nữa."
+},
+{
+question:"20. Tính đạo hàm của \(f(x)=\\frac{1}{x}\)",
+options:["\(1/x^2\)","\(-1/x^2\)","\(-x^2\)","\(x^{-1}\)"],
+correct:1,
+explanation:"Viết \(1/x=x^{-1}\), rồi áp dụng quy tắc lũy thừa: \((-1)x^{-2}\).",
+ tip:"Đưa phân thức về dạng lũy thừa trước khi đạo hàm."
+}
+];
+
+const container = document.getElementById('quiz-container');
+let score = 0;
+let answered = 0;
+
+function renderQuestions() {
+  let currentSection = "";
+
+  questions.forEach((q, index) => {
+
+    if(q.section && q.section !== currentSection){
+      currentSection = q.section;
+      const sectionTitle = document.createElement('div');
+      sectionTitle.className = 'section-title';
+      sectionTitle.innerHTML = currentSection;
+      container.appendChild(sectionTitle);
+    }
+
+    const card = document.createElement('div');
+    card.className = 'question-card';
+
+    const title = document.createElement('div');
+    title.className = 'question-title';
+    title.innerHTML = q.question;
+    card.appendChild(title);
+
+    q.options.forEach((opt, i) => {
+      const option = document.createElement('div');
+      option.className = 'option';
+      option.innerHTML = opt;
+
+      option.onclick = () => {
+        if(card.dataset.answered) return;
+
+        card.dataset.answered = true;
+        answered++;
+
+        const allOptions = card.querySelectorAll('.option');
+
+        allOptions[q.correct].classList.add('correct');
+
+        if(i === q.correct){
+          option.classList.add('correct');
+          score++;
+        } else {
+          option.classList.add('wrong');
+        }
+
+        document.getElementById('score').innerText = score;
+
+        const explanation = card.querySelector('.explanation');
+        explanation.style.display = 'block';
+
+        MathJax.typesetPromise();
+      };
+
+      card.appendChild(option);
+    });
+
+    const explanation = document.createElement('div');
+    explanation.className = 'explanation';
+    explanation.innerHTML = `
+      <strong>✅ Đáp án đúng:</strong> ${q.options[q.correct]}<br><br>
+      <strong>📘 Giải thích:</strong> ${q.explanation}
+      <div class="tip">
+      <strong>⚡ Mẹo làm nhanh:</strong> ${q.tip}
+      </div>
+    `;
+
+    card.appendChild(explanation);
+
+    container.appendChild(card);
+  });
+
+  MathJax.typesetPromise();
+}
+
+renderQuestions();
+
+// Download current HTML
+const downloadBtn = document.querySelector('.download-btn');
+downloadBtn.addEventListener('click', function(e){
+  e.preventDefault();
+
+  const htmlContent = document.documentElement.outerHTML;
+  const blob = new Blob([htmlContent], {type:'text/html'});
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'de-thi-dao-ham-duymt.html';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+
+  URL.revokeObjectURL(url);
+});
+</script>
+
+</body>
+</html>
